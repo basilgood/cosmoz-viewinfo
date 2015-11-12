@@ -14,7 +14,9 @@ if (typeof Cosmoz === 'undefined') {
 			desktop: false,
 			effects: 10,
 			height: 0,
+			landscape: false,
 			mobile: false,
+			portrait: true,
 			tablet: false,
 			width: 0
 		};
@@ -49,17 +51,44 @@ if (typeof Cosmoz === 'undefined') {
 	Polymer({
 		is: 'cosmoz-viewinfo',
 		properties: {
+			/**
+			 * Level of effects to use (0-10)
+			 * NOT_IN_USE
+			 * @type Number
+			 */
 			effects: {
 				type: Number,
 				value: 10,
 				observer: '_effectsChanged'
 			},
-			_sensor: {
-				type: Object
+			/**
+			 * Width breakpoint for mobile
+			 * https://www.google.com/design/spec/layout/adaptive-ui.html#adaptive-ui-breakpoints
+			 * @type Number
+			 */
+			mobileBreakpoint: {
+				type: Number,
+				value: 600
 			},
+			/**
+			 * Width breakpoint for tablet
+			 * https://www.google.com/design/spec/layout/adaptive-ui.html#adaptive-ui-breakpoints
+			 * @type Number
+			 */
+			tabletBreakpoint: {
+				type: Number,
+				value: 960
+			},
+			/**
+			 * Minimum delay between each viewinfo-resize event (ms)
+			 * @type Number
+			 */
 			throttleTimeout: {
 				type: Number,
 				value: 250
+			},
+			_sensor: {
+				type: Object
 			},
 			_throttling: {
 				type: Boolean,
@@ -81,7 +110,7 @@ if (typeof Cosmoz === 'undefined') {
 				}
 				instance.set('viewInfo', {});
 				instance.set('viewInfo', sharedViewInfo);
-			}.bind(this));
+			});
 		},
 		_onResize: function () {
 			var
@@ -101,7 +130,7 @@ if (typeof Cosmoz === 'undefined') {
 							bigger: update
 						});
 					}
-				}.bind(this));
+				});
 				this._throttling = false;
 			}.bind(this);
 
@@ -117,14 +146,17 @@ if (typeof Cosmoz === 'undefined') {
 
 			sharedViewInfo.height = this.clientHeight || this.offsetHeight || this.scrollHeight;
 
+			sharedViewInfo.portrait = sharedViewInfo.height > width;
+			sharedViewInfo.landscape = !sharedViewInfo.portrait;
+
 			if (oldWidth === width) {
 				return;
 			}
 
-			if (width <= 640) {
+			if (width <= this.mobileBreakpoint) {
 				sharedViewInfo.mobile = true;
 				sharedViewInfo.tablet = false;
-			} else if (width <= 900) {
+			} else if (width <= this.tabletBreakpoint) {
 				sharedViewInfo.mobile = false;
 				sharedViewInfo.tablet = true;
 			} else {
