@@ -10,7 +10,6 @@
   "keywords": [
     "web-components",
     "polymer",
-    "router",
     "cosmoz"
   ],
   "license": "Apache 2.0",
@@ -23,10 +22,12 @@
   ],
   "dependencies": {
     "polymer": "^1.2.0",
-    "iron-component-page": "PolymerElements/iron-component-page#~1.0.7",
-    "iron-flex-layout": "PolymerElements/iron-flex-layout#~1.0.4",
-    "iron-list": "PolymerElements/iron-list#~1.1.4",
-    "neon-animation": "polymerelements/neon-animation#~1.0.8",
     "css-element-queries": "~0.3.0"
+  },
+  "devDependencies": {
+    "paper-drawer-panel": "PolymerElements/paper-drawer-panel#~1.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "iron-flex-layout": "PolymerElements/iron-flex-layout#^1.0.0",
+    "neon-animation": "polymerelements/neon-animation#^1.0.0"
   }
 }
