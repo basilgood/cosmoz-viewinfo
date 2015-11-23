@@ -23,11 +23,23 @@ if (typeof Cosmoz === 'undefined') {
 
 	/**
 	 * Behavior to inherit the viewInfo property with device and viewport info
-	 * @type {Object}
 	 @polymerBehavior
 	 */
 	Cosmoz.ViewInfoBehavior = {
 		properties: {
+			/**
+			 * viewInfo object
+			 * {
+			 * 	desktop: Boolean,
+			 * 	effects: Number (1-10),
+			 * 	height: Number,
+			 * 	landscape: Boolean,
+			 * 	mobile: Boolean,
+			 * 	portrait: Boolean,
+			 * 	tablet: Boolean,
+			 * 	width: Number
+			 * }
+			 */
 			viewInfo: {
 				type: Object,
 				notify: true
@@ -52,9 +64,8 @@ if (typeof Cosmoz === 'undefined') {
 		is: 'cosmoz-viewinfo',
 		properties: {
 			/**
-			 * Level of effects to use (0-10)
+			 * Level of effects to use (0-10)<br/>
 			 * NOT_IN_USE
-			 * @type Number
 			 */
 			effects: {
 				type: Number,
@@ -62,18 +73,16 @@ if (typeof Cosmoz === 'undefined') {
 				observer: '_effectsChanged'
 			},
 			/**
-			 * Width breakpoint for mobile
+			 * Width breakpoint for mobile<br/>
 			 * https://www.google.com/design/spec/layout/adaptive-ui.html#adaptive-ui-breakpoints
-			 * @type Number
 			 */
 			mobileBreakpoint: {
 				type: Number,
 				value: 600
 			},
 			/**
-			 * Width breakpoint for tablet
+			 * Width breakpoint for tablet<br/>
 			 * https://www.google.com/design/spec/layout/adaptive-ui.html#adaptive-ui-breakpoints
-			 * @type Number
 			 */
 			tabletBreakpoint: {
 				type: Number,
@@ -81,15 +90,20 @@ if (typeof Cosmoz === 'undefined') {
 			},
 			/**
 			 * Minimum delay between each viewinfo-resize event (ms)
-			 * @type Number
 			 */
 			throttleTimeout: {
 				type: Number,
 				value: 250
 			},
+			/**
+			 * Placeholder for ResizeSensor
+			 */
 			_sensor: {
 				type: Object
 			},
+			/**
+			 * Whether we're currently throttling resize-events
+			 */
 			_throttling: {
 				type: Boolean,
 				value: false
@@ -103,6 +117,10 @@ if (typeof Cosmoz === 'undefined') {
 			sharedViewInfo.effects = this.effects;
 			this._notifyInstances();
 		},
+		/**
+		 * Loop over registered ViewInfoBehavior components and notify of changes<br/>
+		 * TODO: Don't reset the viewInfo property, but rather notify specific properties
+		 */
 		_notifyInstances: function () {
 			viewInfoInstances.forEach(function (instance) {
 				if (!instance) {
@@ -112,6 +130,9 @@ if (typeof Cosmoz === 'undefined') {
 				instance.set('viewInfo', sharedViewInfo);
 			});
 		},
+		/**
+		 * Called when ResizeSensor detects a resize, throttles `viewinfo-resize` events
+		 */
 		_onResize: function () {
 			var
 				update = this._updateViewSize(),
@@ -139,6 +160,9 @@ if (typeof Cosmoz === 'undefined') {
 				this._throttling = true;
 			}
 		},
+		/**
+		 * Recalculate viewInfo and updated sharedViewInfo accordingly
+		 */
 		_updateViewSize: function () {
 			var
 				oldWidth = sharedViewInfo.width,
