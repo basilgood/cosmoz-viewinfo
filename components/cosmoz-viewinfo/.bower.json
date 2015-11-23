@@ -1,0 +1,42 @@
+{
+  "name": "cosmoz-viewinfo",
+  "main": "cosmoz-viewinfo.html",
+  "homepage": "https://github.com/Neovici/cosmoz-viewinfo",
+  "authors": [
+    "Neovici Development"
+  ],
+  "description": "Cosmoz Viewinfo Polymer component",
+  "keywords": [
+    "web-components",
+    "polymer",
+    "cosmoz"
+  ],
+  "license": "Apache 2.0",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "^1.2.0",
+    "css-element-queries": "~0.3.0"
+  },
+  "devDependencies": {
+    "paper-drawer-panel": "PolymerElements/paper-drawer-panel#^1.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "iron-flex-layout": "PolymerElements/iron-flex-layout#^1.0.0",
+    "neon-animation": "polymerelements/neon-animation#^1.0.0"
+  },
+  "_release": "8c89b6f245",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "8c89b6f245e9fca79a455b08011edc87b140b0b5"
+  },
+  "_source": "git://github.com/neovici/cosmoz-viewinfo.git",
+  "_target": "master",
+  "_originalSource": "neovici/cosmoz-viewinfo",
+  "_direct": true
+}
