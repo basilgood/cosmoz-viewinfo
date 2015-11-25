@@ -165,7 +165,7 @@ if (typeof Cosmoz === 'undefined') {
 		 */
 		_updateViewSize: function () {
 			var
-				prev = sharedViewInfo,
+				prevWidth = sharedViewInfo.width,
 				next = {
 					height: this.clientHeight || this.offsetHeight || this.scrollHeight,
 					width: this.clientWidth || this.offsetWidth || this.scrollWidth
@@ -187,9 +187,9 @@ if (typeof Cosmoz === 'undefined') {
 
 			next.desktop = !next.mobile && !next.tablet;
 
-			this._notifyInstances(this._getDelta(prev, next));
+			this._notifyInstances(this._getDelta(sharedViewInfo, next));
 
-			return prev.width < next.width;
+			return prevWidth < next.width;
 		},
 		/**
 		 * Calculate the diff between two objects
