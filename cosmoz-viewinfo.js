@@ -113,21 +113,21 @@ if (typeof Cosmoz === 'undefined') {
 			this._sensor = new ResizeSensor(this, this._onResize.bind(this));
 			this._onResize();
 		},
-		_effectsChanged: function () {
-			sharedViewInfo.effects = this.effects;
-			this._notifyInstances();
+		_effectsChanged: function (newValue) {
+			this._notifyInstances({ effects: newValue });
 		},
 		/**
 		 * Loop over registered ViewInfoBehavior components and notify of changes<br/>
 		 * TODO: Don't reset the viewInfo property, but rather notify specific properties
 		 */
-		_notifyInstances: function () {
+		_notifyInstances: function (delta) {
 			viewInfoInstances.forEach(function (instance) {
 				if (!instance) {
 					return;
 				}
-				instance.set('viewInfo', {});
-				instance.set('viewInfo', sharedViewInfo);
+				Object.keys(delta).forEach(function (key) {
+					instance.set('viewInfo.' + key, delta[key]);
+				});
 			});
 		},
 		/**
@@ -165,35 +165,44 @@ if (typeof Cosmoz === 'undefined') {
 		 */
 		_updateViewSize: function () {
 			var
-				oldWidth = sharedViewInfo.width,
-				width = this.clientWidth || this.offsetWidth || this.scrollWidth;
+				prev = sharedViewInfo,
+				next = {
+					height: this.clientHeight || this.offsetHeight || this.scrollHeight,
+					width: this.clientWidth || this.offsetWidth || this.scrollWidth
+				};
 
-			sharedViewInfo.height = this.clientHeight || this.offsetHeight || this.scrollHeight;
+			next.portrait = next.height > next.width;
+			next.landscape = !next.portrait;
 
-			sharedViewInfo.portrait = sharedViewInfo.height > width;
-			sharedViewInfo.landscape = !sharedViewInfo.portrait;
-
-			if (oldWidth === width) {
-				return;
-			}
-
-			if (width <= this.mobileBreakpoint) {
-				sharedViewInfo.mobile = true;
-				sharedViewInfo.tablet = false;
-			} else if (width <= this.tabletBreakpoint) {
-				sharedViewInfo.mobile = false;
-				sharedViewInfo.tablet = true;
+			if (next.width <= this.mobileBreakpoint) {
+				next.mobile = true;
+				next.tablet = false;
+			} else if (next.width <= this.tabletBreakpoint) {
+				next.mobile = false;
+				next.tablet = true;
 			} else {
-				sharedViewInfo.mobile = false;
-				sharedViewInfo.tablet = false;
+				next.mobile = false;
+				next.tablet = false;
 			}
 
-			sharedViewInfo.desktop = !sharedViewInfo.mobile && !sharedViewInfo.tablet;
-			sharedViewInfo.width = width;
+			next.desktop = !next.mobile && !next.tablet;
 
-			this._notifyInstances();
+			this._notifyInstances(this._getDelta(prev, next));
 
-			return oldWidth < width;
+			return prev.width < next.width;
+		},
+		/**
+		 * Calculate the diff between two objects
+		 */
+		_getDelta: function (prev, next) {
+			var delta = {};
+			Object.keys(next).forEach(function (key) {
+				var nextVal = next[key];
+				if (prev[key] === undefined || prev[key] !== nextVal) {
+					delta[key] = nextVal;
+				}
+			});
+			return delta;
 		}
 	});
 }());
