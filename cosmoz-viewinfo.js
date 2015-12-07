@@ -61,6 +61,9 @@ if (typeof Cosmoz === 'undefined') {
 	};
 
 	Polymer({
+		behaviors: [
+			Polymer.IronResizableBehavior
+		],
 		is: 'cosmoz-viewinfo',
 		properties: {
 			/**
@@ -109,8 +112,11 @@ if (typeof Cosmoz === 'undefined') {
 				value: false
 			}
 		},
+		listeners: {
+			'iron-resize': '_onResize'
+		},
 		attached: function () {
-			this._sensor = new ResizeSensor(this, this._onResize.bind(this));
+			// this._sensor = new ResizeSensor(this, this._onResize.bind(this));
 			this._onResize();
 		},
 		_effectsChanged: function (newValue) {
@@ -134,6 +140,7 @@ if (typeof Cosmoz === 'undefined') {
 		 * Called when ResizeSensor detects a resize, throttles `viewinfo-resize` events
 		 */
 		_onResize: function () {
+			console.log('iron-resize!');
 			var
 				update = this._updateViewSize(),
 				throttleFunction;
