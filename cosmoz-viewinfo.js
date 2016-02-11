@@ -117,7 +117,8 @@ if (typeof Cosmoz === 'undefined') {
 		},
 		attached: function () {
 			// this._sensor = new ResizeSensor(this, this._onResize.bind(this));
-			this._onResize();
+			// (pasleq) Calling _onResize here is not needed as this will be done by IronResizableBehavior.attached.
+			// this._onResize();
 		},
 		_effectsChanged: function (newValue) {
 			this._notifyInstances({ effects: newValue });
@@ -132,7 +133,7 @@ if (typeof Cosmoz === 'undefined') {
 					return;
 				}
 				Object.keys(delta).forEach(function (key) {
-					instance.set('viewInfo.' + key, delta[key]);
+					instance.notifyPath('viewInfo.' + key, delta[key]);
 				});
 			});
 		},
@@ -176,7 +177,8 @@ if (typeof Cosmoz === 'undefined') {
 				next = {
 					height: this.clientHeight || this.offsetHeight || this.scrollHeight,
 					width: this.clientWidth || this.offsetWidth || this.scrollWidth
-				};
+				},
+				delta;
 
 			next.portrait = next.height > next.width;
 			next.landscape = !next.portrait;
@@ -194,7 +196,13 @@ if (typeof Cosmoz === 'undefined') {
 
 			next.desktop = !next.mobile && !next.tablet;
 
-			this._notifyInstances(this._getDelta(sharedViewInfo, next));
+			delta = this._getDelta(sharedViewInfo, next);
+
+			Object.keys(delta).forEach(function (key) {
+				sharedViewInfo[key] = delta[key];
+			});
+
+			this._notifyInstances(delta);
 
 			return prevWidth < next.width;
 		},
