@@ -141,7 +141,6 @@ if (typeof Cosmoz === 'undefined') {
 		 * Called when ResizeSensor detects a resize, throttles `viewinfo-resize` events
 		 */
 		_onResize: function () {
-			console.log('iron-resize!');
 			var
 				update = this._updateViewSize(),
 				throttleFunction;
