@@ -1,4 +1,4 @@
-/*global Cosmoz, Polymer, ResizeSensor, window */
+/*global Cosmoz, Polymer, window */
 
 if (typeof Cosmoz === 'undefined') {
 	var Cosmoz = {};
@@ -99,12 +99,6 @@ if (typeof Cosmoz === 'undefined') {
 				value: 250
 			},
 			/**
-			 * Placeholder for ResizeSensor
-			 */
-			_sensor: {
-				type: Object
-			},
-			/**
 			 * Whether we're currently throttling resize-events
 			 */
 			_throttling: {
@@ -114,11 +108,6 @@ if (typeof Cosmoz === 'undefined') {
 		},
 		listeners: {
 			'iron-resize': '_onResize'
-		},
-		attached: function () {
-			// this._sensor = new ResizeSensor(this, this._onResize.bind(this));
-			// (pasleq) Calling _onResize here is not needed as this will be done by IronResizableBehavior.attached.
-			// this._onResize();
 		},
 		_effectsChanged: function (newValue) {
 			this._notifyInstances({ effects: newValue });
@@ -138,7 +127,7 @@ if (typeof Cosmoz === 'undefined') {
 			});
 		},
 		/**
-		 * Called when ResizeSensor detects a resize, throttles `viewinfo-resize` events
+		 * Called on `iron-resize`, throttles `viewinfo-resize` events
 		 */
 		_onResize: function () {
 			var
