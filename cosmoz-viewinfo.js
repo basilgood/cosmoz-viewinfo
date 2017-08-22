@@ -1,12 +1,8 @@
-/*global Cosmoz, Polymer, window */
-
-if (typeof Cosmoz === 'undefined') {
-	var Cosmoz = {};
-}
-
 (function () {
 
-	"use strict";
+	'use strict';
+
+	window.Cosmoz = window.Cosmoz || {};
 
 	var
 		viewInfoInstances = [],
