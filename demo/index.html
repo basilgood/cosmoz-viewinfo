@@ -83,10 +83,8 @@
 
 	</template>
 
-	<script>
-		/*global document*/
-
-		"use strict";
+	<script type="text/javascript">
+		'use strict';
 
 		var scope = document.getElementById('template');
 		scope.selected = 0;
@@ -102,7 +100,6 @@
 			this.exitAnimation = 'slide-left-animation';
 			this.selected = this.selected === 4 ? 0 : (this.selected + 1);
 		};
-
 	</script>
 </body>
 </html>

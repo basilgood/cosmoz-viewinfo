@@ -41,31 +41,30 @@
 	</test-fixture>
 
 	<script>
-	/*global logStore, errorStore, warnStore */
-	(function () {
-		'use strict';
+		/*global logStore, errorStore, warnStore */
+		(function () {
+			'use strict';
 
-		suite('<cosmoz-viewinfo>', function () {
-			var myElement;
+			suite('<cosmoz-viewinfo>', function () {
+				var myElement;
 
-			setup(function () {
-				myElement = fixture('cosmoz-viewinfo-fixture');
+				setup(function () {
+					myElement = fixture('cosmoz-viewinfo-fixture');
+				});
+
+				test('No console logs should exist', function () {
+					assert.equal(logStore.length, 0, 'Log messages: ' + logStore.join(' | '));
+				});
+
+				test('No console warn should exist', function () {
+					assert.equal(warnStore.length, 0, 'Warn messages: ' + warnStore.join(' | '));
+				});
+
+				test('No console errors should exist', function () {
+					assert.equal(errorStore.length, 0, 'Error messages: ' + errorStore.join(' | '));
+				});
 			});
-
-			test('No console logs should exist', function () {
-				assert.equal(logStore.length, 0, 'Log messages: ' + logStore.join(' | '));
-			});
-
-			test('No console warn should exist', function () {
-				assert.equal(warnStore.length, 0, 'Warn messages: ' + warnStore.join(' | '));
-			});
-
-			test('No console errors should exist', function () {
-				assert.equal(errorStore.length, 0, 'Error messages: ' + errorStore.join(' | '));
-			});
-		});
-	}());
-
+		}());
 	</script>
 </body>
 </html>
