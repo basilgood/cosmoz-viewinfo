@@ -49,7 +49,7 @@
 		},
 
 		detached() {
-			var i = viewInfoInstances.indexOf(this);
+			const i = viewInfoInstances.indexOf(this);
 			if (i >= 0) {
 				viewInfoInstances.splice(i, 1);
 			}
@@ -109,8 +109,11 @@
 			this._notifyInstances({ effects: newValue });
 		},
 		/**
-		 * Loop over registered ViewInfoBehavior components and notify of changes<br/>
-		 * TODO: Don't reset the viewInfo property, but rather notify specific properties
+		* Loop over registered ViewInfoBehavior components and notify of changes<br/>
+ 	 * TODO: Don't reset the viewInfo property, but rather notify specific properties
+		 *
+		 * @param  {Object} delta object with changes
+		 * @returns {void}
 		 */
 		_notifyInstances(delta) {
 			viewInfoInstances.forEach(function (instance) {
@@ -124,9 +127,10 @@
 		},
 		/**
 		 * Called on `iron-resize`, throttles `viewinfo-resize` events
+		 * @returns {void}
 		 */
 		_onResize() {
-			var
+			let
 				update = this._updateViewSize(),
 				throttleFunction;
 
@@ -154,9 +158,11 @@
 		},
 		/**
 		 * Recalculate viewInfo and updated sharedViewInfo accordingly
+		 *
+		 * @returns {Bolean}  returns true if sharedViewInfo.width is lower the next width
 		 */
 		_updateViewSize() {
-			var
+			let
 				prevWidth = sharedViewInfo.width,
 				next = {
 					height: this.clientHeight || this.offsetHeight || this.scrollHeight,
@@ -190,11 +196,16 @@
 
 			return prevWidth < next.width;
 		},
+
 		/**
-		 * Calculate the diff between two objects
+		 ** Calculate the diff between two objects
+		 *
+		 * @param  {Object} prev first object
+		 * @param  {Object} next second object
+		 * @returns {Object}      delta
 		 */
 		_getDelta(prev, next) {
-			var delta = {};
+			let delta = {};
 			Object.keys(next).forEach(function (key) {
 				var nextVal = next[key];
 				if (prev[key] === undefined || prev[key] !== nextVal) {
