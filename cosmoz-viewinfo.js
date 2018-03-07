@@ -42,13 +42,13 @@
 			}
 		},
 
-		attached: function () {
+		attached() {
 			viewInfoInstances.push(this);
 			// Needed to make template views trigger on load and not only on resize
 			this.viewInfo = sharedViewInfo;
 		},
 
-		detached: function () {
+		detached() {
 			var i = viewInfoInstances.indexOf(this);
 			if (i >= 0) {
 				viewInfoInstances.splice(i, 1);
@@ -105,14 +105,14 @@
 		listeners: {
 			'iron-resize': '_onResize'
 		},
-		_effectsChanged: function (newValue) {
+		_effectsChanged(newValue) {
 			this._notifyInstances({ effects: newValue });
 		},
 		/**
 		 * Loop over registered ViewInfoBehavior components and notify of changes<br/>
 		 * TODO: Don't reset the viewInfo property, but rather notify specific properties
 		 */
-		_notifyInstances: function (delta) {
+		_notifyInstances(delta) {
 			viewInfoInstances.forEach(function (instance) {
 				if (!instance) {
 					return;
@@ -125,7 +125,7 @@
 		/**
 		 * Called on `iron-resize`, throttles `viewinfo-resize` events
 		 */
-		_onResize: function () {
+		_onResize() {
 			var
 				update = this._updateViewSize(),
 				throttleFunction;
@@ -155,7 +155,7 @@
 		/**
 		 * Recalculate viewInfo and updated sharedViewInfo accordingly
 		 */
-		_updateViewSize: function () {
+		_updateViewSize() {
 			var
 				prevWidth = sharedViewInfo.width,
 				next = {
@@ -193,7 +193,7 @@
 		/**
 		 * Calculate the diff between two objects
 		 */
-		_getDelta: function (prev, next) {
+		_getDelta(prev, next) {
 			var delta = {};
 			Object.keys(next).forEach(function (key) {
 				var nextVal = next[key];
