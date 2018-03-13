@@ -116,11 +116,11 @@
 		 * @returns {void}
 		 */
 		_notifyInstances(delta) {
-			viewInfoInstances.forEach(function (instance) {
+			viewInfoInstances.forEach(instance => {
 				if (!instance) {
 					return;
 				}
-				Object.keys(delta).forEach(function (key) {
+				Object.keys(delta).forEach(key => {
 					instance.notifyPath('viewInfo.' + key, delta[key]);
 				});
 			});
@@ -130,26 +130,23 @@
 		 * @returns {void}
 		 */
 		_onResize() {
-			let
-				update = this._updateViewSize(),
-				throttleFunction;
+			const update = this._updateViewSize(),
+				throttleFunction = function () {
+					viewInfoInstances.forEach(element => {
+					// Only fire on visible elements, offsetParent should be null for hidden
+					// https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetParent
+						if (element.offsetParent !== null) {
+							element.fire('viewinfo-resize', {
+								bigger: update
+							});
+						}
+					});
+					this._throttling = false;
+				}.bind(this);
 
 			if (update === undefined) {
 				return;
 			}
-
-			throttleFunction = function () {
-				viewInfoInstances.forEach(function (element) {
-					// Only fire on visible elements, offsetParent should be null for hidden
-					// https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetParent
-					if (element.offsetParent !== null) {
-						element.fire('viewinfo-resize', {
-							bigger: update
-						});
-					}
-				});
-				this._throttling = false;
-			}.bind(this);
 
 			if (!this._throttling) {
 				window.setTimeout(throttleFunction, this.throttleTimeout);
@@ -162,13 +159,12 @@
 		 * @returns {Bolean}  returns true if sharedViewInfo.width is lower the next width
 		 */
 		_updateViewSize() {
-			let
+			const
 				prevWidth = sharedViewInfo.width,
 				next = {
 					height: this.clientHeight || this.offsetHeight || this.scrollHeight,
 					width: this.clientWidth || this.offsetWidth || this.scrollWidth
-				},
-				delta;
+				};
 
 			next.portrait = next.height > next.width;
 			next.landscape = !next.portrait;
@@ -186,9 +182,9 @@
 
 			next.desktop = !next.mobile && !next.tablet;
 
-			delta = this._getDelta(sharedViewInfo, next);
+			const delta = this._getDelta(sharedViewInfo, next);
 
-			Object.keys(delta).forEach(function (key) {
+			Object.keys(delta).forEach(key => {
 				sharedViewInfo[key] = delta[key];
 			});
 
@@ -206,8 +202,8 @@
 		 */
 		_getDelta(prev, next) {
 			let delta = {};
-			Object.keys(next).forEach(function (key) {
-				var nextVal = next[key];
+			Object.keys(next).forEach(key => {
+				const nextVal = next[key];
 				if (prev[key] === undefined || prev[key] !== nextVal) {
 					delta[key] = nextVal;
 				}
