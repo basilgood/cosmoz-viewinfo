@@ -93,13 +93,6 @@
 			throttleTimeout: {
 				type: Number,
 				value: 250
-			},
-			/**
-			 * Whether we're currently throttling resize-events
-			 */
-			_throttling: {
-				type: Boolean,
-				value: false
 			}
 		},
 		listeners: {
@@ -125,34 +118,34 @@
 				});
 			});
 		},
+
 		/**
 		 * Called on `iron-resize`, throttles `viewinfo-resize` events
 		 * @returns {void}
 		 */
 		_onResize() {
-			const update = this._updateViewSize(),
-				throttleFunction = function () {
-					viewInfoInstances.forEach(element => {
-					// Only fire on visible elements, offsetParent should be null for hidden
-					// https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetParent
-						if (element.offsetParent !== null) {
-							element.fire('viewinfo-resize', {
-								bigger: update
-							});
-						}
-					});
-					this._throttling = false;
-				}.bind(this);
-
-			if (update === undefined) {
+			if (!Array.isArray(viewInfoInstances) || viewInfoInstances.length === 0) {
 				return;
 			}
 
-			if (!this._throttling) {
-				window.setTimeout(throttleFunction, this.throttleTimeout);
-				this._throttling = true;
-			}
+			this.debounce('_throttleResize', () => {
+				const update = this._updateViewSize();
+
+				if (update === undefined) {
+					return;
+				}
+				viewInfoInstances.filter((el) => {
+				// Only fire on visible elements, offsetParent should be null for hidden
+				// https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetParent
+					return el.offsetParent !== null;
+				}).forEach(element => {
+					element.fire('viewinfo-resize', {
+						bigger: update
+					});
+				});
+			}, this.throttleTimeout);
 		},
+
 		/**
 		 * Recalculate viewInfo and updated sharedViewInfo accordingly
 		 *
