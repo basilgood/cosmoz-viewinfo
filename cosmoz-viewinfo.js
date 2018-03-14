@@ -194,14 +194,13 @@
 		 * @returns {Object}      delta
 		 */
 		_getDelta(prev, next) {
-			let delta = {};
-			Object.keys(next).forEach(key => {
+			return Object.keys(next).reduce((delta, key) => {
 				const nextVal = next[key];
 				if (prev[key] === undefined || prev[key] !== nextVal) {
 					delta[key] = nextVal;
 				}
-			});
-			return delta;
+				return delta;
+			}, {});
 		}
 	});
 }());
