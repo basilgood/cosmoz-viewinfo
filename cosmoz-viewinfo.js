@@ -4,8 +4,7 @@
 
 	window.Cosmoz = window.Cosmoz || {};
 
-	var
-		viewInfoInstances = [],
+	const viewInfoInstances = [],
 		sharedViewInfo = {
 			desktop: false,
 			effects: 10,
@@ -103,7 +102,7 @@
 		},
 		/**
 		* Loop over registered ViewInfoBehavior components and notify of changes<br/>
- 	 * TODO: Don't reset the viewInfo property, but rather notify specific properties
+		 * TODO: Don't reset the viewInfo property, but rather notify specific properties
 		 *
 		 * @param  {Object} delta object with changes
 		 * @returns {void}
