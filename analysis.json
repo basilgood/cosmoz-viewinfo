@@ -463,20 +463,25 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 114,
+              "line": 117,
               "column": 2
             },
             "end": {
-              "line": 123,
+              "line": 126,
               "column": 3
             }
           },
           "metadata": {},
           "params": [
             {
-              "name": "delta"
+              "name": "delta",
+              "type": "Object",
+              "description": "object with changes"
             }
-          ]
+          ],
+          "return": {
+            "type": "void"
+          }
         },
         {
           "name": "_onResize",
@@ -484,16 +489,19 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 127,
+              "line": 131,
               "column": 2
             },
             "end": {
-              "line": 153,
+              "line": 157,
               "column": 3
             }
           },
           "metadata": {},
-          "params": []
+          "params": [],
+          "return": {
+            "type": "void"
+          }
         },
         {
           "name": "_updateViewSize",
@@ -501,40 +509,52 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 157,
+              "line": 163,
               "column": 2
             },
             "end": {
-              "line": 191,
+              "line": 197,
               "column": 3
             }
           },
           "metadata": {},
-          "params": []
+          "params": [],
+          "return": {
+            "type": "Bolean",
+            "desc": "returns true if sharedViewInfo.width is lower the next width"
+          }
         },
         {
           "name": "_getDelta",
-          "description": "Calculate the diff between two objects",
+          "description": "* Calculate the diff between two objects",
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 195,
+              "line": 206,
               "column": 2
             },
             "end": {
-              "line": 204,
+              "line": 215,
               "column": 3
             }
           },
           "metadata": {},
           "params": [
             {
-              "name": "prev"
+              "name": "prev",
+              "type": "Object",
+              "description": "first object"
             },
             {
-              "name": "next"
+              "name": "next",
+              "type": "Object",
+              "description": "second object"
             }
-          ]
+          ],
+          "return": {
+            "type": "Object",
+            "desc": "delta"
+          }
         }
       ],
       "staticMethods": [],
@@ -555,7 +575,7 @@
           "column": 9
         },
         "end": {
-          "line": 205,
+          "line": 216,
           "column": 2
         }
       },

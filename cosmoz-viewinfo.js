@@ -4,8 +4,7 @@
 
 	window.Cosmoz = window.Cosmoz || {};
 
-	var
-		viewInfoInstances = [],
+	const viewInfoInstances = [],
 		sharedViewInfo = {
 			desktop: false,
 			effects: 10,
@@ -42,14 +41,14 @@
 			}
 		},
 
-		attached: function () {
+		attached() {
 			viewInfoInstances.push(this);
 			// Needed to make template views trigger on load and not only on resize
 			this.viewInfo = sharedViewInfo;
 		},
 
-		detached: function () {
-			var i = viewInfoInstances.indexOf(this);
+		detached() {
+			const i = viewInfoInstances.indexOf(this);
 			if (i >= 0) {
 				viewInfoInstances.splice(i, 1);
 			}
@@ -93,76 +92,71 @@
 			throttleTimeout: {
 				type: Number,
 				value: 250
-			},
-			/**
-			 * Whether we're currently throttling resize-events
-			 */
-			_throttling: {
-				type: Boolean,
-				value: false
 			}
 		},
 		listeners: {
 			'iron-resize': '_onResize'
 		},
-		_effectsChanged: function (newValue) {
+		_effectsChanged(newValue) {
 			this._notifyInstances({ effects: newValue });
 		},
 		/**
-		 * Loop over registered ViewInfoBehavior components and notify of changes<br/>
+		* Loop over registered ViewInfoBehavior components and notify of changes<br/>
 		 * TODO: Don't reset the viewInfo property, but rather notify specific properties
+		 *
+		 * @param  {Object} delta object with changes
+		 * @returns {void}
 		 */
-		_notifyInstances: function (delta) {
-			viewInfoInstances.forEach(function (instance) {
+		_notifyInstances(delta) {
+			viewInfoInstances.forEach(instance => {
 				if (!instance) {
 					return;
 				}
-				Object.keys(delta).forEach(function (key) {
+				Object.keys(delta).forEach(key => {
 					instance.notifyPath('viewInfo.' + key, delta[key]);
 				});
 			});
 		},
+
 		/**
 		 * Called on `iron-resize`, throttles `viewinfo-resize` events
+		 * @returns {void}
 		 */
-		_onResize: function () {
-			var
-				update = this._updateViewSize(),
-				throttleFunction;
-
-			if (update === undefined) {
+		_onResize() {
+			if (!Array.isArray(viewInfoInstances) || viewInfoInstances.length === 0) {
 				return;
 			}
 
-			throttleFunction = function () {
-				viewInfoInstances.forEach(function (element) {
-					// Only fire on visible elements, offsetParent should be null for hidden
-					// https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetParent
-					if (element.offsetParent !== null) {
-						element.fire('viewinfo-resize', {
-							bigger: update
-						});
-					}
-				});
-				this._throttling = false;
-			}.bind(this);
+			this.debounce('_throttleResize', () => {
+				const update = this._updateViewSize();
 
-			if (!this._throttling) {
-				window.setTimeout(throttleFunction, this.throttleTimeout);
-				this._throttling = true;
-			}
+				if (update === undefined) {
+					return;
+				}
+				viewInfoInstances.filter((el) => {
+				// Only fire on visible elements, offsetParent should be null for hidden
+				// https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetParent
+					return el.offsetParent !== null;
+				}).forEach(element => {
+					element.fire('viewinfo-resize', {
+						bigger: update
+					});
+				});
+			}, this.throttleTimeout);
 		},
+
 		/**
 		 * Recalculate viewInfo and updated sharedViewInfo accordingly
+		 *
+		 * @returns {Bolean}  returns true if sharedViewInfo.width is lower the next width
 		 */
-		_updateViewSize: function () {
-			var
+		_updateViewSize() {
+			const
 				prevWidth = sharedViewInfo.width,
 				next = {
 					height: this.clientHeight || this.offsetHeight || this.scrollHeight,
 					width: this.clientWidth || this.offsetWidth || this.scrollWidth
-				},
-				delta;
+				};
 
 			next.portrait = next.height > next.width;
 			next.landscape = !next.portrait;
@@ -180,9 +174,9 @@
 
 			next.desktop = !next.mobile && !next.tablet;
 
-			delta = this._getDelta(sharedViewInfo, next);
+			const delta = this._getDelta(sharedViewInfo, next);
 
-			Object.keys(delta).forEach(function (key) {
+			Object.keys(delta).forEach(key => {
 				sharedViewInfo[key] = delta[key];
 			});
 
@@ -190,18 +184,22 @@
 
 			return prevWidth < next.width;
 		},
+
 		/**
-		 * Calculate the diff between two objects
+		 ** Calculate the diff between two objects
+		 *
+		 * @param  {Object} prev first object
+		 * @param  {Object} next second object
+		 * @returns {Object}      delta
 		 */
-		_getDelta: function (prev, next) {
-			var delta = {};
-			Object.keys(next).forEach(function (key) {
-				var nextVal = next[key];
+		_getDelta(prev, next) {
+			return Object.keys(next).reduce((delta, key) => {
+				const nextVal = next[key];
 				if (prev[key] === undefined || prev[key] !== nextVal) {
 					delta[key] = nextVal;
 				}
-			});
-			return delta;
+				return delta;
+			}, {});
 		}
 	});
 }());
