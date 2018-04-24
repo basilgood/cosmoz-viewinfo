@@ -17,7 +17,8 @@
 		};
 
 	/**
-	 * Behavior to inherit the viewInfo property with device and viewport info
+	 * Behavior to inherit the viewInfo property with device and viewport info.
+	 *
 	 @polymerBehavior
 	 */
 	Cosmoz.ViewInfoBehavior = {
@@ -62,8 +63,7 @@
 		is: 'cosmoz-viewinfo',
 		properties: {
 			/**
-			 * Level of effects to use (0-10)<br/>
-			 * NOT_IN_USE
+			 * Level of effects to use (0-10). Not in use.
 			 */
 			effects: {
 				type: Number,
@@ -71,7 +71,7 @@
 				observer: '_effectsChanged'
 			},
 			/**
-			 * Width breakpoint for mobile<br/>
+			 * Width breakpoint for mobile.
 			 * https://www.google.com/design/spec/layout/adaptive-ui.html#adaptive-ui-breakpoints
 			 */
 			mobileBreakpoint: {
@@ -79,7 +79,7 @@
 				value: 600
 			},
 			/**
-			 * Width breakpoint for tablet<br/>
+			 * Width breakpoint for tablet.
 			 * https://www.google.com/design/spec/layout/adaptive-ui.html#adaptive-ui-breakpoints
 			 */
 			tabletBreakpoint: {
@@ -87,7 +87,7 @@
 				value: 960
 			},
 			/**
-			 * Minimum delay between each viewinfo-resize event (ms)
+			 * Minimum delay between each viewinfo-resize event (ms).
 			 */
 			throttleTimeout: {
 				type: Number,
@@ -101,10 +101,12 @@
 			this._notifyInstances({ effects: newValue });
 		},
 		/**
-		* Loop over registered ViewInfoBehavior components and notify of changes<br/>
-		 * TODO: Don't reset the viewInfo property, but rather notify specific properties
+		* Loops over registered ViewInfoBehavior components and notify of
+		* changes.
+		 * TODO: Don't reset the viewInfo property, but rather notify specific
+		 * properties.
 		 *
-		 * @param  {Object} delta object with changes
+		 * @param  {object} delta object with changes
 		 * @returns {void}
 		 */
 		_notifyInstances(delta) {
@@ -119,7 +121,7 @@
 		},
 
 		/**
-		 * Called on `iron-resize`, throttles `viewinfo-resize` events
+		 * Called on `iron-resize`, throttles `viewinfo-resize` events.
 		 * @returns {void}
 		 */
 		_onResize() {
@@ -146,9 +148,10 @@
 		},
 
 		/**
-		 * Recalculate viewInfo and updated sharedViewInfo accordingly
+		 * Recalculates viewInfo and updated sharedViewInfo accordingly.
 		 *
-		 * @returns {Bolean}  returns true if sharedViewInfo.width is lower the next width
+		 * @returns {boolean}  returns true if sharedViewInfo.width is lower the
+		 * next width
 		 */
 		_updateViewSize() {
 			const
@@ -186,11 +189,11 @@
 		},
 
 		/**
-		 ** Calculate the diff between two objects
+		 ** Calculates the diff between two objects.
 		 *
-		 * @param  {Object} prev first object
-		 * @param  {Object} next second object
-		 * @returns {Object}      delta
+		 * @param  {object} prev First object.
+		 * @param  {object} next Second object.
+		 * @returns {object} Delta.
 		 */
 		_getDelta(prev, next) {
 			return Object.keys(next).reduce((delta, key) => {
