@@ -25,17 +25,17 @@
 		(function () {
 			'use strict';
 
-			suite('<cosmoz-viewinfo>', function () {
-				var viewInfo;
+			suite('<cosmoz-viewinfo>', () => {
+				let viewInfo;
 
-				setup(function () {
+				setup(() => {
 					viewInfo = fixture('basic');
 				});
 
-				test('instantiates a cosmoz-viewinfo', function (){
+				test('instantiates a cosmoz-viewinfo', done => {
 					assert.equal(viewInfo.is, 'cosmoz-viewinfo');
+					done();
 				});
-
 			});
 		}());
 	</script>
