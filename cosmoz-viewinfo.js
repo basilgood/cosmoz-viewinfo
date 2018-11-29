@@ -56,50 +56,57 @@
 		}
 	};
 
-	Polymer({
-		behaviors: [
-			Polymer.IronResizableBehavior
-		],
-		is: 'cosmoz-viewinfo',
-		properties: {
-			/**
-			 * Level of effects to use (0-10). Not in use.
-			 */
-			effects: {
-				type: Number,
-				value: 10,
-				observer: '_effectsChanged'
-			},
-			/**
-			 * Width breakpoint for mobile.
-			 * https://www.google.com/design/spec/layout/adaptive-ui.html#adaptive-ui-breakpoints
-			 */
-			mobileBreakpoint: {
-				type: Number,
-				value: 600
-			},
-			/**
-			 * Width breakpoint for tablet.
-			 * https://www.google.com/design/spec/layout/adaptive-ui.html#adaptive-ui-breakpoints
-			 */
-			tabletBreakpoint: {
-				type: Number,
-				value: 960
-			},
-			/**
-			 * Minimum delay between each viewinfo-resize event (ms).
-			 */
-			throttleTimeout: {
-				type: Number,
-				value: 250
-			}
-		},
-		listeners: {
-			'iron-resize': '_onResize'
-		},
+	class CosmozViewinfo extends Polymer.mixinBehaviors([Polymer.IronResizableBehavior], Polymer.Element) {
+
+		static get is() {
+			return 'cosmoz-viewinfo';
+		}
+
+		static get properties() {
+			return {
+				/**
+				 * Level of effects to use (0-10). Not in use.
+				 */
+				effects: {
+					type: Number,
+					value: 10,
+					observer: '_effectsChanged'
+				},
+				/**
+				 * Width breakpoint for mobile.
+				 * https://www.google.com/design/spec/layout/adaptive-ui.html#adaptive-ui-breakpoints
+				 */
+				mobileBreakpoint: {
+					type: Number,
+					value: 600
+				},
+				/**
+				 * Width breakpoint for tablet.
+				 * https://www.google.com/design/spec/layout/adaptive-ui.html#adaptive-ui-breakpoints
+				 */
+				tabletBreakpoint: {
+					type: Number,
+					value: 960
+				},
+				/**
+				 * Minimum delay between each viewinfo-resize event (ms).
+				 */
+				throttleTimeout: {
+					type: Number,
+					value: 250
+				}
+			};
+		}
+
+		static get listeners() {
+			return {
+				'iron-resize': '_onResize'
+			};
+		}
+
 		_effectsChanged(newValue) {
 			this._notifyInstances({ effects: newValue });
-		},
+		}
 		/**
 		* Loops over registered ViewInfoBehavior components and notify of
 		* changes.
@@ -118,7 +125,7 @@
 					instance.notifyPath('viewInfo.' + key, delta[key]);
 				});
 			});
-		},
+		}
 
 		/**
 		 * Called on `iron-resize`, throttles `viewinfo-resize` events.
@@ -145,7 +152,7 @@
 					});
 				});
 			}, this.throttleTimeout);
-		},
+		}
 
 		/**
 		 * Recalculates viewInfo and updated sharedViewInfo accordingly.
@@ -186,7 +193,7 @@
 			this._notifyInstances(delta);
 
 			return prevWidth < next.width;
-		},
+		}
 
 		/**
 		 ** Calculates the diff between two objects.
@@ -204,5 +211,7 @@
 				return delta;
 			}, {});
 		}
-	});
+	}
+
+	customElements.define(CosmozViewinfo.is, CosmozViewinfo);
 }());
