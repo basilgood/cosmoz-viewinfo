@@ -41,13 +41,21 @@
 				notify: true
 			}
 		},
-
+		/**
+		 * Add to view info instances and set the shared view info to the view info.
+		 *
+		 * @returns {void}
+		 */
 		attached() {
 			viewInfoInstances.push(this);
 			// Needed to make template views trigger on load and not only on resize
 			this.viewInfo = sharedViewInfo;
 		},
-
+		/**
+		 * Remove from view instances.
+		 *
+		 * @returns {void}
+		 */
 		detached() {
 			const i = viewInfoInstances.indexOf(this);
 			if (i >= 0) {
@@ -57,11 +65,19 @@
 	};
 
 	class CosmozViewinfo extends Polymer.mixinBehaviors([Polymer.IronResizableBehavior], Polymer.Element) {
-
+		/**
+		 * Get component name.
+		 *
+		 * @returns {string} Name.
+		 */
 		static get is() {
 			return 'cosmoz-viewinfo';
 		}
-
+		/**
+		 * Get component properties.
+		 *
+		 * @returns {object} Properties.
+		 */
 		static get properties() {
 			return {
 				/**
@@ -97,13 +113,22 @@
 				}
 			};
 		}
-
+		/**
+		 * Get component listeners.
+		 *
+		 * @returns {object} listeners.
+		 */
 		static get listeners() {
 			return {
 				'iron-resize': '_onResize'
 			};
 		}
-
+		/**
+		 * Notify instances of effect changes.
+		 *
+		 * @param {object} effects Effects.
+		 * @returns {void}
+		 */
 		_effectsChanged(newValue) {
 			this._notifyInstances({ effects: newValue });
 		}
@@ -126,7 +151,6 @@
 				});
 			});
 		}
-
 		/**
 		 * Called on `iron-resize`, throttles `viewinfo-resize` events.
 		 * @returns {void}
@@ -153,7 +177,6 @@
 				});
 			}, this.throttleTimeout);
 		}
-
 		/**
 		 * Recalculates viewInfo and updated sharedViewInfo accordingly.
 		 *
