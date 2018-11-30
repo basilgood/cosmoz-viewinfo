@@ -126,7 +126,7 @@
 		/**
 		 * Notify instances of effect changes.
 		 *
-		 * @param {object} effects Effects.
+		 * @param {object} newValue Changed effects.
 		 * @returns {void}
 		 */
 		_effectsChanged(newValue) {
@@ -180,7 +180,7 @@
 								bigger: update
 							}
 						}
-					))
+					));
 				});
 			}, this.throttleTimeout);
 		}
