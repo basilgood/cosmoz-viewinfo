@@ -167,13 +167,20 @@
 					return;
 				}
 				viewInfoInstances.filter((el) => {
-				// Only fire on visible elements, offsetParent should be null for hidden
+				// Only dispatch event on visible elements, offsetParent should be null for hidden
 				// https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetParent
 					return el.offsetParent !== null;
 				}).forEach(element => {
-					element.fire('viewinfo-resize', {
-						bigger: update
-					});
+					element.dispatchEvent(new CustomEvent(
+						'viewinfo-resize',
+						{
+							bubbles: true,
+							composed: true,
+							detail: {
+								bigger: update
+							}
+						}
+					))
 				});
 			}, this.throttleTimeout);
 		}
