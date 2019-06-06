@@ -6,35 +6,28 @@
 
 	<title>Cosmoz Viewinfo</title>
 
-	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+	<script src="/components/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
 
-	<link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html" />
-	<link rel="import" href="../../iron-flex-layout/iron-flex-layout-classes.html" />
-
-	<link rel="import" href="../cosmoz-viewinfo.html">
-	<link rel="import" href="./helpers/x-viewinfo.html">
-
-	<style>
-		cosmoz-viewinfo {
-			position: absolute;
-			top: 0;
-			right: 0;
-			bottom: 0;
-			left: 0;
-		}
-	</style>
-	<custom-style>
-		<style is="custom-style" include="demo-pages-shared-styles iron-flex iron-positioning">
-		</style>
-	</custom-style>
+	<script type="module" src="/components/@polymer/iron-flex-layout/iron-flex-layout-classes.js"></script>
+	<script type="module" src="/components/@polymer/iron-demo-helpers/demo-pages-shared-styles.js"></script>
+	<script type="module" src="../cosmoz-viewinfo.js"></script>
+	<script type="module" src="./helpers/x-viewinfo.js"></script>
 </head>
 <body class="fullbleed layout vertical">
-	<dom-bind id="template">
-		<template is="dom-bind">
-			<cosmoz-viewinfo>
-				<x-viewinfo label="page 1">Page 1</x-viewinfo>
-			</cosmoz-viewinfo>
-		</template>
-	</dom-bind>
+	<custom-style>
+		<style is="custom-style" include="demo-pages-shared-styles iron-flex iron-positioning">
+			cosmoz-viewinfo {
+				position: absolute;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				left: 0;
+			}
+		</style>
+	</custom-style>
+
+	<cosmoz-viewinfo>
+		<x-viewinfo label="page 1">Page 1</x-viewinfo>
+	</cosmoz-viewinfo>
 </body>
 </html>

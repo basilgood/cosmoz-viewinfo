@@ -6,26 +6,31 @@
 
 	<title>Cosmoz Viewinfo</title>
 
-	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-	<link rel="import" href="../../neon-animation/web-animations.html">
+	<script src="/components/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+	<script src="/components/web-animations-js/web-animations-next-lite.min.js"></script>
 
-	<link rel="import" href="../../paper-styles/color.html">
-	<link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html" />
-	<link rel="import" href="../../iron-flex-layout/iron-flex-layout-classes.html" />
+	<script type="module" src="/components/@polymer/paper-styles/color.js"></script>
+	<script type="module" src="/components/@polymer/iron-demo-helpers/demo-pages-shared-styles.js"></script>
+	<script type="module" src="/components/@polymer/iron-flex-layout/iron-flex-layout-classes.js"></script>
+	<script type="module" src="/components/@polymer/neon-animation/neon-animated-pages.js"></script>
+	<script type="module" src="/components/@polymer/neon-animation/neon-animatable.js"></script>
+	<script type="module" src="/components/@polymer/neon-animation/neon-animations.js"></script>
+	<script type="module" src="/components/@polymer/app-layout/app-layout.js"></script>
 
-  <link rel="import" href="../../neon-animation/neon-animated-pages.html">
-  <link rel="import" href="../../neon-animation/neon-animatable.html">
-  <link rel="import" href="../../neon-animation/neon-animations.html">
-  <link rel="import" href="../../paper-drawer-panel/paper-drawer-panel.html">
-
-	<link rel="import" href="../cosmoz-viewinfo.html">
-	<link rel="import" href="helpers/x-viewinfo.html">
-
+	<script type="module" src="../cosmoz-viewinfo.js"></script>
+	<script type="module" src="./helpers/x-viewinfo.js"></script>
+</head>
+<body class="fullbleed layout vertical">
 	<custom-style>
 		<style is="custom-style" include="demo-pages-shared-styles iron-flex iron-positioning">
 			.toolbar {
 				padding: 8px;
 			}
+			.main {
+				height: 100%;
+				overflow: hidden;
+			}
+
 			neon-animatable {
 				color: white;
 				@apply --layout-horizontal;
@@ -55,36 +60,34 @@
 		</style>
 	</custom-style>
 
-</head>
-<body unresolved class="fullbleed layout vertical">
 	<dom-bind id="template">
 		<template is="dom-bind">
-			<paper-drawer-panel responsive-width="961px" drawer-toggle-attribute="paper-drawer-toggle">
-				<div drawer slot="drawer">
-				This is the drawer
+			<app-drawer-layout responsive-width="961px" drawer-toggle-attribute="paper-drawer-toggle" fullbleed>
+				<app-drawer slot="drawer">
+					This is the drawer
+				</app-drawer>
+
+				<app-toolbar>
+					<button on-click="_onPrevClick">&lt;&lt;</button>
+					<button on-click="_onNextClick">&gt;&gt;</button>
+					<button drawer-toggle>toggle drawer</button>
+				</app-toolbar>
+
+				<div class="main relative">
+					<cosmoz-viewinfo effects="8" class="fit">
+						<neon-animated-pages id="pages" class="fit" selected="[[selected]]" entry-animation="[[entryAnimation]]" exit-animation="[[exitAnimation]]">
+							<neon-animatable><x-viewinfo label="page 1">Page 1</x-viewinfo></neon-animatable>
+							<neon-animatable><x-viewinfo label="page 2">Page 2</x-viewinfo></neon-animatable>
+							<neon-animatable>
+								<x-viewinfo label="page3 viewinfo 1"></x-viewinfo>
+								<x-viewinfo label="page3 viewinfo 2"></x-viewinfo>
+							</neon-animatable>
+							<neon-animatable>4</neon-animatable>
+							<neon-animatable>5</neon-animatable>
+						</neon-animated-pages>
+					</cosmoz-viewinfo>
 				</div>
-				<div main slot="main" class="fit layout vertical">
-					<div class="toolbar">
-						<button on-click="_onPrevClick">&lt;&lt;</button>
-						<button on-click="_onNextClick">&gt;&gt;</button>
-						<button paper-drawer-toggle>toggle drawer</button>
-					</div>
-					<div class="flex relative">
-						<cosmoz-viewinfo effects="8" class="fit">
-							<neon-animated-pages id="pages" class="fit" selected="[[selected]]" entry-animation="[[entryAnimation]]" exit-animation="[[exitAnimation]]">
-								<neon-animatable><x-viewinfo label="page 1">Page 1</x-viewinfo></neon-animatable>
-								<neon-animatable><x-viewinfo label="page 2">Page 2</x-viewinfo></neon-animatable>
-								<neon-animatable>
-									<x-viewinfo label="page3 viewinfo 1"></x-viewinfo>
-									<x-viewinfo label="page3 viewinfo 2"></x-viewinfo>
-								</neon-animatable>
-								<neon-animatable>4</neon-animatable>
-								<neon-animatable>5</neon-animatable>
-							</neon-animated-pages>
-						</cosmoz-viewinfo>
-					</div>
-				</div>
-			</paper-drawer-panel>
+			</app-drawer-layout>
 		</template>
 	</dom-bind>
 
@@ -92,7 +95,6 @@
 		'use strict';
 
 		let scope = document.getElementById('template');
-		scope = !scope.set ? scope.firstElementChild : scope;
 
 		scope.selected = 0;
 

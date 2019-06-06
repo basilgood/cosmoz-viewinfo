@@ -17,8 +17,7 @@
 			"dir": "./coverage",
 			"reporters": ["text-summary", "lcov"],
 			"include": [
-				"cosmoz-viewinfo.html",
-				"cosmoz-viewinfo.js"
+				"**/cosmoz-*.js"
 			],
 			"exclude": []
 		},
@@ -30,11 +29,7 @@
 			}, {
 				"browserName": "chrome",
 				"platform": "Windows 10",
-				"version": "dev"
-			}, {
-				"browserName": "chrome",
-				"platform": "Windows 10",
-				"version": "beta"
+				"version": "73"
 			}, {
 				"browserName": "firefox",
 				"platform": "Windows 10",
