@@ -18,7 +18,7 @@ export const VIEW_INFO_INSTANCES = [],
  * @polymer
  * @mixinFunction
  */
-export const ViewInfoMixin = dedupingMixin((base)=>
+export const viewInfoAware = dedupingMixin(base =>
 	class extends base {
 		static get properties() {
 			return {

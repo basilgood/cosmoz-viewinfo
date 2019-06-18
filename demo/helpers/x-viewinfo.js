@@ -1,14 +1,14 @@
 import { PolymerElement } from '@polymer/polymer/polymer-element';
 import { html } from '@polymer/polymer/lib/utils/html-tag';
 
-import { ViewInfoMixin } from '../../cosmoz-viewinfo-mixin';
+import { viewInfoAware } from '../../cosmoz-viewinfo-mixin';
 
-class XViewInfo extends ViewInfoMixin(PolymerElement) {
-	static get is(){
+class XViewInfo extends viewInfoAware(PolymerElement) {
+	static get is() {
 		return 'x-viewinfo';
 	}
 
-	static get template(){
+	static get template() {
 		return html`
 			<slot></slot>
 			<span>Mobile: </span><span>{{ viewInfo.mobile }}</span><br>
@@ -22,7 +22,7 @@ class XViewInfo extends ViewInfoMixin(PolymerElement) {
 		`;
 	}
 
-	static get properties(){
+	static get properties() {
 		return {
 			label: {
 				type: String

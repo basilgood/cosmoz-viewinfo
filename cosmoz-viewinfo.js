@@ -8,7 +8,7 @@ import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class';
 
 import { VIEW_INFO_INSTANCES, SHARED_VIEW_INFO } from './cosmoz-viewinfo-mixin';
 
-export { ViewInfoMixin } from './cosmoz-viewinfo-mixin';
+export { viewInfoAware } from './cosmoz-viewinfo-mixin';
 
 /**
  * `<cosmoz-viewinfo>` is a component to create a view with information about
@@ -75,7 +75,7 @@ export class CosmozViewInfo extends mixinBehaviors([IronResizableBehavior], Poly
 		};
 	}
 
-	constructor(){
+	constructor() {
 		super();
 		this._boundOnResize = this._onResize.bind(this);
 	}
@@ -141,7 +141,7 @@ export class CosmozViewInfo extends mixinBehaviors([IronResizableBehavior], Poly
 					if (update == null) {
 						return;
 					}
-					VIEW_INFO_INSTANCES.filter((el) => {
+					VIEW_INFO_INSTANCES.filter(el => {
 					// Only dispatch event on visible elements, offsetParent should be null for hidden
 					// https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetParent
 						return el.offsetParent !== null;
