@@ -1,6 +1,6 @@
 {
-	"name": "cosmoz-viewinfo",
-	"version": "1.0.0",
+	"name": "@neovici/cosmoz-viewinfo",
+	"version": "3.0.0",
 	"description": "[![Build Status](https://travis-ci.org/Neovici/cosmoz-viewinfo.svg?branch=master)](https://travis-ci.org/Neovici/cosmoz-viewinfo)",
 	"keywords": [
 		"polymer",
@@ -23,6 +23,8 @@
 	"scripts": {
 		"analyze": "polymer analyze --input cosmoz-*.js  > analysis.json",
 		"lint": "eslint --cache --ext .js,.html . && polymer lint cosmoz-*.js",
+		"preversion": "npm run lint && npm run test -- --skip-plugin sauce",
+		"postversion": "git push && git push --tags",
 		"start": "polymer serve -o",
 		"test": "polymer test"
 	},
@@ -31,7 +33,7 @@
 		"@polymer/polymer": "^3.2.0"
 	},
 	"devDependencies": {
-		"@neovici/eslint-config": "neovici/eslint-config#semver:^1.0.0",
+		"@neovici/eslint-config": "github:neovici/eslint-config#semver:^1.0.0",
 		"@polymer/app-layout": "^3.0.2",
 		"@polymer/iron-component-page": "^4.0.0",
 		"@polymer/iron-demo-helpers": "^3.0.0",
