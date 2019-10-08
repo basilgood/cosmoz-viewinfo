@@ -1,7 +1,7 @@
 {
 	"name": "@neovici/cosmoz-viewinfo",
 	"version": "3.0.1",
-	"description": "[![Build Status](https://travis-ci.org/Neovici/cosmoz-viewinfo.svg?branch=master)](https://travis-ci.org/Neovici/cosmoz-viewinfo)",
+	"description": "A component to create a view with information about available size and throttled resize events",
 	"keywords": [
 		"polymer",
 		"web-components"
@@ -33,7 +33,7 @@
 		"@polymer/polymer": "^3.2.0"
 	},
 	"devDependencies": {
-		"@neovici/eslint-config": "github:neovici/eslint-config#semver:^1.0.0",
+		"@neovici/eslint-config": "^1.1.7",
 		"@polymer/app-layout": "^3.0.2",
 		"@polymer/iron-component-page": "^4.0.0",
 		"@polymer/iron-demo-helpers": "^3.0.0",
