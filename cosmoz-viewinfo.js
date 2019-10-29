@@ -22,7 +22,9 @@ export { viewInfoAware } from './cosmoz-viewinfo-mixin';
  */
 export class CosmozViewInfo extends mixinBehaviors([IronResizableBehavior], PolymerElement) {
 	static get template() {
-		return html`<slot></slot>`;
+		return html`
+			<slot></slot>
+		`;
 	}
 
 	/**
@@ -133,31 +135,25 @@ export class CosmozViewInfo extends mixinBehaviors([IronResizableBehavior], Poly
 			return;
 		}
 		enqueueDebouncer(
-			this._debouncer = Debouncer.debounce(this._debouncer,
-				timeOut.after(this.throttleTimeout),
-				() => {
-					const update = this._updateViewSize();
+			this._debouncer = Debouncer.debounce(this._debouncer, timeOut.after(this.throttleTimeout), () => {
+				const update = this._updateViewSize();
 
-					if (update == null) {
-						return;
-					}
-					VIEW_INFO_INSTANCES.filter(el => {
+				VIEW_INFO_INSTANCES.filter(el => {
 					// Only dispatch event on visible elements, offsetParent should be null for hidden
 					// https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetParent
-						return el.offsetParent !== null;
-					}).forEach(element => {
-						element.dispatchEvent(new CustomEvent(
-							'viewinfo-resize',
-							{
-								bubbles: true,
-								composed: true,
-								detail: {
-									bigger: update
-								}
+					return el.offsetParent !== null;
+				}).forEach(element => {
+					element.dispatchEvent(
+						new CustomEvent('viewinfo-resize', {
+							bubbles: true,
+							composed: true,
+							detail: {
+								bigger: update
 							}
-						));
-					});
-				})
+						})
+					);
+				});
+			})
 		);
 	}
 
@@ -168,8 +164,7 @@ export class CosmozViewInfo extends mixinBehaviors([IronResizableBehavior], Poly
 	 * next width
 	 */
 	_updateViewSize() {
-		const
-			prevWidth = SHARED_VIEW_INFO.width,
+		const prevWidth = SHARED_VIEW_INFO.width,
 			next = {
 				height: this.clientHeight || this.offsetHeight || this.scrollHeight,
 				width: this.clientWidth || this.offsetWidth || this.scrollWidth
