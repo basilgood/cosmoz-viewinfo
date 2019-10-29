@@ -131,9 +131,6 @@ export class CosmozViewInfo extends mixinBehaviors([IronResizableBehavior], Poly
 	 * @returns {void}
 	 */
 	_onResize() {
-		if (!Array.isArray(VIEW_INFO_INSTANCES) || VIEW_INFO_INSTANCES.length === 0) {
-			return;
-		}
 		enqueueDebouncer(
 			this._debouncer = Debouncer.debounce(this._debouncer, timeOut.after(this.throttleTimeout), () => {
 				const update = this._updateViewSize();
