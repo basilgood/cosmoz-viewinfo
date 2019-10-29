@@ -1,8 +1,11 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+		<meta charset="utf-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+		/>
 		<title>cosmoz-viewinfo basic test</title>
 
 		<script src="/components/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
@@ -10,28 +13,53 @@
 		<script src="/components/mocha/mocha.js"></script>
 		<script src="/components/chai/chai.js"></script>
 		<script src="/components/wct-mocha/wct-mocha.js"></script>
-</head>
-<body>
-	<test-fixture id="basic">
-		<template>
-			<cosmoz-viewinfo></cosmoz-viewinfo>
-		</template>
-	</test-fixture>
+	</head>
+	<body>
+		<test-fixture id="basic">
+			<template>
+				<cosmoz-viewinfo style="display:block;width:100px">
+					<helper-element></helper-element>
+				</cosmoz-viewinfo>
+			</template>
+		</test-fixture>
 
-	<script type="module">
-		import { CosmozViewInfo } from '../cosmoz-viewinfo.js';
+		<script type="module">
+			import { PolymerElement, html } from "@polymer/polymer/polymer-element";
+			import { CosmozViewInfo, viewInfoAware } from "../cosmoz-viewinfo.js";
+			import { flush } from "@polymer/polymer/lib/utils/flush.js";
 
-		suite('<cosmoz-viewinfo>', () => {
-			let viewInfo;
+			class HelperElement extends viewInfoAware(PolymerElement) {
+				static get template() {
+					return html`
+						[[ viewInfo.width ]]
+					`;
+				}
 
-			setup(() => {
-				viewInfo = fixture('basic');
+				_attachDom(dom) {
+					this.appendChild(dom);
+				}
+			}
+			customElements.define("helper-element", HelperElement);
+
+			suite("<cosmoz-viewinfo>", () => {
+				let viewInfo;
+
+				setup(() => {
+					viewInfo = fixture("basic");
+				});
+
+				test("it works", () => {
+					assert.instanceOf(viewInfo, CosmozViewInfo);
+				});
+
+				test("calculates view information on resize", () => {
+					assert.equal(viewInfo.innerText, "100");
+					viewInfo.style.width = "200px";
+					viewInfo.dispatchEvent(new CustomEvent("iron-resize"));
+					flush();
+					assert.equal(viewInfo.innerText, "200");
+				});
 			});
-
-			test('it works', () => {
-				assert.instanceOf(viewInfo, CosmozViewInfo);
-			});
-		});
-	</script>
-</body>
+		</script>
+	</body>
 </html>
