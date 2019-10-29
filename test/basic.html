@@ -23,6 +23,12 @@
 			</template>
 		</test-fixture>
 
+		<test-fixture id="noinstances">
+			<template>
+				<cosmoz-viewinfo style="display:block;width:100px"></cosmoz-viewinfo>
+			</template>
+		</test-fixture>
+
 		<script type="module">
 			import { PolymerElement, html } from "@polymer/polymer/polymer-element";
 			import { CosmozViewInfo, viewInfoAware } from "../cosmoz-viewinfo.js";
@@ -67,6 +73,27 @@
 					viewInfo.dispatchEvent(new CustomEvent("iron-resize"));
 					flush();
 					assert.equal(viewInfo.innerText, "1000 false false true");
+				});
+			});
+
+			suite("<cosmoz-viewinfo>", () => {
+				let viewInfo;
+
+				setup(() => {
+					viewInfo = fixture("noinstances");
+				});
+
+				test("new elements created after resize have correct view info", () => {
+					// the viewinfo element is resized
+					viewInfo.style.width = "700px";
+					viewInfo.dispatchEvent(new CustomEvent("iron-resize"));
+					flush();
+
+					// a view info aware element is added to the page
+					viewInfo.appendChild(document.createElement("helper-element"));
+
+					// assert that the view information is correct
+					assert.equal(viewInfo.innerText, "700 false true false");
 				});
 			});
 		</script>
