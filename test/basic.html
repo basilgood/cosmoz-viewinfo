@@ -31,7 +31,10 @@
 			class HelperElement extends viewInfoAware(PolymerElement) {
 				static get template() {
 					return html`
-						[[ viewInfo.width ]]
+						<span>[[ viewInfo.width ]]</span>
+						<span>[[ viewInfo.mobile ]]</span>
+						<span>[[ viewInfo.tablet ]]</span>
+						<span>[[ viewInfo.desktop ]]</span>
 					`;
 				}
 
@@ -53,11 +56,17 @@
 				});
 
 				test("calculates view information on resize", () => {
-					assert.equal(viewInfo.innerText, "100");
-					viewInfo.style.width = "200px";
+					assert.equal(viewInfo.innerText, "100 true false false");
+
+					viewInfo.style.width = "700px";
 					viewInfo.dispatchEvent(new CustomEvent("iron-resize"));
 					flush();
-					assert.equal(viewInfo.innerText, "200");
+					assert.equal(viewInfo.innerText, "700 false true false");
+
+					viewInfo.style.width = "1000px";
+					viewInfo.dispatchEvent(new CustomEvent("iron-resize"));
+					flush();
+					assert.equal(viewInfo.innerText, "1000 false false true");
 				});
 			});
 		</script>
