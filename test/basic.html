@@ -29,6 +29,14 @@
 			</template>
 		</test-fixture>
 
+		<test-fixture id="zerowidth">
+			<template>
+				<cosmoz-viewinfo style="display:block;width:0px;font-size: 0px">
+					<helper-element></helper-element>
+				</cosmoz-viewinfo>
+			</template>
+		</test-fixture>
+
 		<script type="module">
 			import { PolymerElement, html } from "@polymer/polymer/polymer-element";
 			import { CosmozViewInfo, viewInfoAware } from "../cosmoz-viewinfo.js";
@@ -94,6 +102,31 @@
 
 					// assert that the view information is correct
 					assert.equal(viewInfo.innerText, "700 false true false");
+				});
+			});
+
+			suite("<cosmoz-viewinfo>", () => {
+				let viewInfo;
+
+				setup(() => {
+					viewInfo = fixture("zerowidth");
+				});
+
+				test("it works when viewport width is zero", () => {
+					// the viewinfo element is zero
+					assert.equal(viewInfo.innerText, "0 true false false");
+
+					// the viewinfo element is 100px
+					viewInfo.style.width = "100px";
+					viewInfo.dispatchEvent(new CustomEvent("iron-resize"));
+					flush();
+					assert.equal(viewInfo.innerText, "100 true false false");
+
+					// the viewinfo element is zero again
+					viewInfo.style.width = "0px";
+					viewInfo.dispatchEvent(new CustomEvent("iron-resize"));
+					flush();
+					assert.equal(viewInfo.innerText, "0 true false false");
 				});
 			});
 		</script>
