@@ -117,9 +117,6 @@ export class CosmozViewInfo extends mixinBehaviors([IronResizableBehavior], Poly
 	 */
 	_notifyInstances(delta) {
 		VIEW_INFO_INSTANCES.forEach(instance => {
-			if (!instance) {
-				return;
-			}
 			Object.keys(delta).forEach(key => {
 				instance.notifyPath('viewInfo.' + key, delta[key]);
 			});
